@@ -1,0 +1,7 @@
+- name: Borra al usuario pepe
+  hosts: all
+  tasks:
+    user:
+      nombre: pepe
+      state: absent
+      remove: true

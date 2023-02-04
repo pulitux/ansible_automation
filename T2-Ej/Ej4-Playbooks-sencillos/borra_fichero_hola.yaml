@@ -1,0 +1,9 @@
+- name: Borra fichero hola en los hosts
+  hosts:
+    - all
+    - localhost
+  tasks:
+    - name: borra hola.txt
+      file:
+        - path: /tmp/hola.txt
+        - state: absent
