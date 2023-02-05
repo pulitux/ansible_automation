@@ -1,0 +1,10 @@
+--- 
+
+- name: Print various facts
+  hosts: all
+  tasks:
+    - name: print IP
+      debug:
+        msg: >
+          The default IPV4 address of {{ ansible_facts.fqdn }}
+          is {{ ansible_facts.default_ipv4.address }}

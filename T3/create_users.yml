@@ -1,0 +1,13 @@
+---
+
+- name: create users from encrypted file
+  hosts: devservers
+  become: tru
+  remote_user: devops
+  vars_files:
+    - secret.yml
+  tasks:
+    - name:
+      user: creating user from secret.yml
+        name: "{{ username}"
+        password: "{{ password }}"
