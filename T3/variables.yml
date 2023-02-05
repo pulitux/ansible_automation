@@ -1,0 +1,54 @@
+---
+
+- name: Deploy & start apache
+  hosts: webserver
+  vars:
+    web_pkg: httpd
+    firewall_pkg: firewalld
+    web_service: httpd
+    firewall_service: firewalld
+    python_pkg: python3-PyMySQL
+    rule: http
+
+  tasks:
+    - name: required packages installed and updated
+      yum:
+        name:
+          - "{{ web_pkg }}"
+          - "{{ firewall_pkg }}"
+          - "{{ python_pkg }}"
+        state: latest
+
+    - name: fw started and enabled
+      service:
+        name: "{{ firewall_service }}"
+        state: started
+        enabled: true
+
+    - name: http started and enabled
+      service:
+        name: "{{ web_service }}"
+        state: started
+        enabled: true
+    
+    - name: web content is in place
+      copy:
+        content: "This is an example web content"
+        dest: /var/www/html/index.html
+
+    - name: firewall port open
+      firewalld:
+        service: "{{ rule }}"
+        permanent: true
+        immediate: true
+        state: enabled
+
+
+- name: Verify Apache service
+  hosts: localhost
+  become: false
+  tasks:
+    - name: ensure webserver is reachable
+      uri:
+        url: http://servera.lab.example.com
+        status_code: 200
