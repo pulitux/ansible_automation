@@ -1,0 +1,22 @@
+---
+
+- name: install remote facts
+  hosts: webserver
+  vars:
+    remote_dir: /etc/ansible/facts.d
+    facts_file: custom.fact
+    facts_file2: pers.fact
+  tasks:
+    - name: create remote directory
+      file:
+        state: directory
+        recurse: yes
+        path: "{{ remote_dir }}"
+    - name: copy custom
+      copy:
+        src: "{{ facts_file }}"
+        dest: "{{ remote_dir }}"
+    - name: copy pers
+      copy:
+        src: "{{ facts_file2 }}"
+        dest: "{{ remote_dir }}"
