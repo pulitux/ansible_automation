@@ -1,0 +1,91 @@
+---
+
+- name: setup webserver
+  hosts: webserver
+  vars:
+    firewall_pkg: firewalld
+    firewall_svc: firewalld
+    web_pkg: httpd
+    web_svc: httpd
+    ssl_pkg: mod_ssl
+    httpdconf_src: files/httpd.conf
+    httpdconf_dest: /etc/httpd/conf/httpd.conf
+    htaccess_src: files/.htaccess
+    secrets_dir: /etc/httpd/secrets
+    secrets_src: files/htpasswd
+    secrets_dest: "{{ secrets_dir }}/htpasswd"
+    web_root: /var/www/html
+  tasks:
+    - name: install latest pakgs
+      yum:
+        name: 
+          - "{{ firewall_pkg }}"
+          - "{{ web_pkg }}"
+          - "{{ ssl_pkg }}"
+        state: latest
+    - name: copy config file
+      copy:
+        src: "{{ httpdconf_src }}"
+        dest: "{{ httpdconf_dest }}"
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Create a directory if it does not exist
+      file:
+        path: "{{ secrets_dir }}"
+        state: directory
+        owner: apache
+        group: apache
+        mode: '0500'
+    - name: copy password file
+      copy:
+        src: "{{ secrets_src }}"
+        dest: "{{ secrets_dest }}"
+        owner: apache
+        group: apache
+        mode: '0400'
+    - name: copy htaccess file
+      copy:
+        src: "{{ htaccess_src }}"
+        dest: "{{ web_root }}/.htaccess"
+        owner: apache
+        group: apache
+        mode: '0400'
+    - name: create custom content
+      copy:
+        dest: "{{ web_root }}/index.html"
+        content: "{{ ansible_facts['fqdn'] }} ({{ ansible_facts['default_ipv4']['address'] }}) has been customized by Ansible.\n"
+    - name: start and enable firewall
+      service:
+        name: "{{ firewall_svc }}"
+        enabled: true
+        state: started
+    - name: rule for web port
+      firewalld:
+        state: enabled
+        service: https
+        permanent: true
+        immediate: true
+    - name: enable and start httpd
+      service:
+        name: "{{ web_svc }}"
+        enabled: true
+        state: started
+- name: test
+  hosts: localhost
+  become: false
+  vars:
+    web_user: guest
+  vars_files:
+    - vars/secrets.yml
+  tasks:
+    - name: request content
+      uri:
+        url: http://serverb.lab.example.com
+        user: "{{ web_user }}"
+        password: "{{ web_pass }}"
+        status_code: 200
+        validate_certs: no
+        return_content: yes
+    - debug: 
+        var: auth_test.content

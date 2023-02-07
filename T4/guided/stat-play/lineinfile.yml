@@ -1,0 +1,12 @@
+---
+
+- name: play1
+  hosts: servera.lab.example.com
+  tasks:
+    - name: line in file
+      lineinfile:
+        path: /tmp/text.txt
+        line: "Esto es una prueba"
+        rege
+        state: present
+        create: yes
