@@ -1,0 +1,9 @@
+- name: remove a file
+  hosts: all
+  remote_user: devops
+  tasks:
+    - name: use the module
+      file:
+        path: /home/devops/users.txt
+        state: absent
+

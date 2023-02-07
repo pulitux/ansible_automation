@@ -1,0 +1,10 @@
+- name: add text to an existing file
+  hosts: all
+  remote_user: devops
+  tasks:
+    - name: add a single line of text to a file
+      lineinfile:
+        path: /home/devops/users.txt
+        line: "This is a line added by the lineinfile module."
+        state: present
+
