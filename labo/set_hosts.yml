@@ -1,0 +1,9 @@
+- name: set /etc/hosts in managed hosts
+  hosts: all
+  remote_user: student
+  gather_facts: yes
+  tasks:
+    - name: template render
+      template:
+        src: hosts.j2
+        dest: /etc/hosts
