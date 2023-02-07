@@ -1,0 +1,12 @@
+---
+
+- name: reemplaza una linea
+  hosts: servera.lab.example.com
+  tasks:
+    - name: line in file
+      lineinfile:
+        path: /tmp/text.txt
+        line: "Esto es otra prueba"
+        regexp: '^Esto'
+        state: present
+        create: yes

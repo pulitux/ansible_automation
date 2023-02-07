@@ -1,0 +1,12 @@
+- name: add a ablock to an existing file
+  hosts: all
+  remote_user: devops
+  tasks:
+    - name: add a block
+      blockinfile:
+        path: /home/devops/users.txt
+        block: |
+          This block of text consists of two lines
+          They have been added by the blockinfile module
+        state: present
+

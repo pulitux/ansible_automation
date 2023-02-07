@@ -1,0 +1,48 @@
+---
+
+
+- name: Install & configure Apche
+  hosts: webserver
+  vars:
+    web_pkg: httpd
+    firewall_pkg: firewalld
+    web_service: httpd
+    firewall_service: firewalld
+    python_pkg: python3-PyMySQL
+    rule: http
+  tasks:
+    - name: Required Packages
+      yum:
+        name:
+          - "{{ web_pkg }}"
+          - "{{ firewall_pkg }}"
+          - "{{ python_pkg }}"
+        state: latest
+    - name: Start firewall service
+      service:
+        name: "{{ firewall_service }}"
+        enabled: true
+        state: started
+    - name: Start web service
+      service:
+        name: "{{ web_service }}"
+        enabled: true
+        state: started
+    - name: web content is in place
+      copy:
+        content: "Example web content"
+        dest: /var/www/html/index.html
+    - name: open firewall
+      firewalld:
+        service: "{{ rule }}"
+        permanent: true
+        immediate: true
+        state: enabled
+- name: Verify apache
+  hosts: localhost
+  become: false
+  tasks:
+    - name: Server reachable
+      uri:
+        url: http://servera.lab.example.com
+        status_code: 200
