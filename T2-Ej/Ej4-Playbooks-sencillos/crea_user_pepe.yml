@@ -1,0 +1,8 @@
+- name: Crea el usuario pepe en los hosts
+  hosts: all
+  tasks:
+    - name: crea al usuario pepe
+      user:
+        name: pepe
+        state: present
+

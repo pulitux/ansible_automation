@@ -1,0 +1,9 @@
+- name: template hosts.j2
+  hosts: all
+  become: true
+  tasks:
+    - name: deploy template
+      template:
+        src: hosts.j2
+        dest: /root/hosts
+      when: inventory_hostname == 'servera'

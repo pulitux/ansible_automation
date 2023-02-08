@@ -1,5 +1,5 @@
 - name: set /etc/hosts in managed hosts
-  hosts: all
+  hosts: all,localhost
   remote_user: student
   gather_facts: yes
   tasks:
