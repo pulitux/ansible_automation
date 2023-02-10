@@ -1,0 +1,7 @@
+# rhel-system-roles variables
+
+timesync_ntp_provider: chrony
+
+timesync_ntp_servers:
+  - hostname: classroom.example.com
+    ibusrt: yes

@@ -1,0 +1,23 @@
+---
+# tasks file for myvhost
+
+- name: ensure httpd is installed
+  yum:
+    name: httpd
+    state: latest
+
+- name: ensure httpd is running
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+
+- name: vhost file is installed
+  template:
+    src: vhost.conf.j2
+    dest: /etc/httpd/conf.d/vhost.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart httpd

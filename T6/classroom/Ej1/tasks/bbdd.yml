@@ -1,0 +1,28 @@
+- name: instala mariadb
+  yum:
+    name: 
+      - mariadb-server
+      - python3-PyMySQL
+    state: latest
+- name: instala firewall
+  yum:
+    name: firewalld
+    state: latest
+- name: inicia mariadb
+  service: 
+    name: mariadb
+    state: started
+    enabled: true
+- name: inicia firewall
+  service:
+    name: firewalld
+    state: started
+    enabled: true
+- name: habilita puertos
+  firewalld:
+    service:
+      - http
+      - httpd
+    state: enabled
+    permanent: true
+    immediate: true
