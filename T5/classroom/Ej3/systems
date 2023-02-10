@@ -1,0 +1,7 @@
+[produccion]
+servera.lab.example.com
+serverd.lab.example.com
+[desarrollo]
+serverb.lab.example.com
+[sistemas]
+serverc.lab.example.com

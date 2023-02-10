@@ -1,0 +1,56 @@
+---
+
+- name: setup servers
+  hosts: serverb.lab.example.com
+  become: true
+  tasks:
+    - name: install latest packages 
+      yum:
+        name:
+          - firewalld
+          - httpd
+          - mariadb-server
+          - php
+          - php-mysqlnd
+        state: latest
+  
+    - name: start and enable firewalld 
+      service:
+        name: firewalld
+        state: started
+        enabled: yes
+    
+    - name: start and enable http
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: start and enable mariadb
+      service:
+        name: mariadb 
+        state: started
+        enabled: yes
+
+    - name: firewall access to http
+      firewalld:
+        service: http
+        permanent: true
+        state: enabled
+        immediate: true
+
+    - name: gen web content
+      get_url:
+        url: http://materials.example.com/labs/playbook-review/index.php
+        dest: /var/www/html/
+
+- name: Test intranet web server
+  hosts: localhost
+  become: no
+  tasks:
+    - name: connect to the intranet service
+      uri:
+        url: http://serverb.lab.example.com
+        return_content: yes
+        status_code: 200
+

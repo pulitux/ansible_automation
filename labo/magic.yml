@@ -1,0 +1,22 @@
+- name: escupe variables
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: facts
+      debug:
+        var: ansible_facts
+    - name: hostvars
+      debug: 
+        var: hostvars
+    - name: groupnames
+      debug:
+        var: group-vars
+    - nema: groups
+      debug:
+        var: groups
+    - name: inventory_hostname
+      debug:
+        var: inventory_hostname
+    - name: ansible_play_hosts
+      debug:
+        var: ansible_play_hosts

@@ -1,0 +1,52 @@
+---
+- name: Playbook Control Lab
+  hosts: webservers
+  vars_files: vars.yml
+  tasks:
+    - name: check system reqs
+      fail:
+        msg: "Memoria insuficiente o SO erroneo"
+      when: >
+        (ansible_memtotal_mb < min_ram_mb) or 
+        (ansible_distribution != "RedHat")
+    - name: install {{ packages }} pkgs
+      yum:
+        name: "{{ packages }}"
+        state: latest 
+    - name: start {{ services }} services
+      service:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+      loop: "{{ services }}"
+    - name: configuration block
+      block:
+        - name: SSL certs directory
+          file:
+            name: "{{ ssl_cert_dir }}"
+            state: directory
+        - name: copy files
+          copy:
+            src: "{{ item.src }}"
+            dest: "{{ item.dest }}"
+          loop: "{{ web_config_files }}"
+          notify: restart web service
+      rescue:
+        - name: config not success
+          debug:
+            msg: "One or more of the configuration changes failed, but the web service is still active."
+    - name: config firewall
+      firewalld:
+        service: "{{ item }}"
+        state: enabled
+        permanent: yes
+        immediate: yes
+      loop:
+        - http
+        - https
+
+  handlers:
+    - name: restart web service
+      service:
+        name: httpd 
+        state: restarted

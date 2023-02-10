@@ -1,0 +1,11 @@
+---
+
+- name: escribe una linea en un fichero 
+  hosts: servera.lab.example.com
+  tasks:
+    - name: line in file
+      lineinfile:
+        path: /tmp/text.txt
+        line: "Esto es otra prueba"
+        state: present
+        create: yes

@@ -1,0 +1,9 @@
+- name: Crea fichero hola en los hosts
+  hosts:
+    - all
+    - localhost
+  tasks:
+    - name: crea el contenido de hola.txt
+      copy:
+        dest: /tmp/hola.txt
+        content: 'Hola Mundo!'

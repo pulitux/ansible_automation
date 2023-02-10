@@ -1,0 +1,13 @@
+- name: Install package
+  yum:
+    name: "{{ item.package }}"
+    state: latest
+  loop: "{{ program }}"
+
+- name: Enable and start httpd
+  service:
+    name: "{{ item.service }}"
+    enabled: true
+    state: started
+  loop: "{{ program }}"
+

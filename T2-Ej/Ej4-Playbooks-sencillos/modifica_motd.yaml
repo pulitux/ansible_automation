@@ -1,0 +1,9 @@
+- name: Modifica MOTD en los hosts
+  hosts:
+    - all
+    - localhost
+  tasks:
+    - name: cambia el contenido de MOTD
+      copy:
+        dest: /etc/motd
+        content: 'Sistema gestionado por Ansible'

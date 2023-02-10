@@ -1,0 +1,26 @@
+- name: Install and enable httpd 
+  import_tasks: install_and_enable_loop.yml 
+  vars: 
+    program:
+      - package: httpd 
+        service: httpd 
+      - package: firewalld
+        service: firewalld
+
+- name: Tuning configuration installed 
+  copy: 
+    src: files/tune.conf 
+    dest: /etc/httpd/conf.d/tune.conf 
+    owner: root 
+    group: root 
+    mode: 0644 
+  notify: 
+    - restart httpd 
+
+- name: Open the port for http
+  firewalld:
+    service: http
+    immediate: true
+    permanent: true
+    state: enabled
+

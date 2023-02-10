@@ -1,0 +1,3 @@
+{% for host in groups['all'] if inventory_hostname != 'serverd' %}
+{{ hostvars[host]['ansible_facts']['default_ipv4'] }} {{ hostvars[host]['ansible_facts']['fqdn'] }}
+{% endfor %} 
