@@ -1,0 +1,34 @@
+- name: repo playbook
+  hosts: all
+  vars:
+    custom_pkg: example-motd
+  tasks:
+    - name: gather facts
+      package_facts: 
+        manager: auto
+    - name: show pkgs
+      debug:
+        var: ansible_facts.packages
+      when: custom_pkg in ansible_facts.packages
+    - name: repo exists
+      yum_repository: 
+        name: example-internal
+        description: example inc internal yum repo
+        file: example
+        baseurl: http://materials.example.com/yum/repository/
+        gpgcheck: yes
+    - name: rpm key installed
+      rpm_key:
+        key: http://materials.example.com/yum/repository/RPM-GPG-KEY-example
+        state: present
+    - name: install example package
+      yum:
+        name: "{{ custom_pkg }}"
+        state: present
+    - name: gather facts
+      package_facts: 
+        manager: auto
+    - name: show pkgs
+      debug:
+        var: ansible_facts.packages[custom_pkg]
+      when: custom_pkg in ansible_facts.packages

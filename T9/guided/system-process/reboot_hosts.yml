@@ -1,0 +1,6 @@
+- name: reboots servers
+  hosts: webservers
+  become: true
+  tasks:
+    - name: reboot systems
+      reboot:

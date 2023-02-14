@@ -1,0 +1,204 @@
+2023-02-13 06:11:28,732 p=11755 u=student n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+JSON: Expecting value: line 1 column 1 (char 0)
+
+Syntax Error while loading YAML.
+  mapping values are not allowed in this context
+
+The error appears to be in '/home/student/troubleshoot-playbook/samba.yml': line 8, column 30, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+    install_state: installed
+    random_var: This is colon: test
+                             ^ here
+
+2023-02-13 06:12:37,095 p=11770 u=student n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+JSON: Expecting value: line 1 column 1 (char 0)
+
+Syntax Error while loading YAML.
+  did not find expected key
+
+The error appears to be in '/home/student/troubleshoot-playbook/samba.yml': line 44, column 4, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+   - name: deliver samba config
+   ^ here
+
+2023-02-13 06:13:44,080 p=11786 u=student n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+JSON: Expecting value: line 1 column 1 (char 0)
+
+Syntax Error while loading YAML.
+  found unacceptable key (unhashable type: 'AnsibleMapping')
+
+The error appears to be in '/home/student/troubleshoot-playbook/samba.yml': line 14, column 15, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+      name: samba
+      state: {{ install_state }}
+              ^ here
+We could be wrong, but this one looks like it might be an issue with
+missing quotes. Always quote template expression brackets when they
+start a value. For instance:
+
+    with_items:
+      - {{ foo }}
+
+Should be written as:
+
+    with_items:
+      - "{{ foo }}"
+
+2023-02-13 06:14:13,238 p=11792 u=student n=ansible | PLAY [Install a samba server] **************************************************************************
+2023-02-13 06:14:13,247 p=11792 u=student n=ansible | TASK [Gathering Facts] *********************************************************************************
+2023-02-13 06:14:33,417 p=11792 u=student n=ansible | fatal: [servera.lab.exammple.com]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: ssh: connect to host servera.lab.exammple.com port 22: Connection timed out", "unreachable": true}
+2023-02-13 06:14:33,418 p=11792 u=student n=ansible | PLAY RECAP *********************************************************************************************
+2023-02-13 06:14:33,419 p=11792 u=student n=ansible | servera.lab.exammple.com   : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+2023-02-13 06:14:43,925 p=11810 u=student n=ansible | Using /home/student/troubleshoot-playbook/ansible.cfg as config file
+2023-02-13 06:14:44,148 p=11810 u=student n=ansible | PLAY [Install a samba server] **************************************************************************
+2023-02-13 06:14:44,156 p=11810 u=student n=ansible | TASK [Gathering Facts] *********************************************************************************
+2023-02-13 06:15:04,186 p=11810 u=student n=ansible | fatal: [servera.lab.exammple.com]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: ssh: connect to host servera.lab.exammple.com port 22: Connection timed out", "unreachable": true}
+2023-02-13 06:15:04,188 p=11810 u=student n=ansible | PLAY RECAP *********************************************************************************************
+2023-02-13 06:15:04,188 p=11810 u=student n=ansible | servera.lab.exammple.com   : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+2023-02-13 06:15:17,603 p=11820 u=student n=ansible | ansible-playbook 2.9.15
+  config file = /home/student/troubleshoot-playbook/ansible.cfg
+  configured module search path = ['/home/student/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3.6/site-packages/ansible
+  executable location = /usr/bin/ansible-playbook
+  python version = 3.6.8 (default, Mar 18 2021, 08:58:41) [GCC 8.4.1 20200928 (Red Hat 8.4.1-1)]
+2023-02-13 06:15:17,604 p=11820 u=student n=ansible | Using /home/student/troubleshoot-playbook/ansible.cfg as config file
+2023-02-13 06:15:17,825 p=11820 u=student n=ansible | PLAYBOOK: samba.yml ************************************************************************************
+2023-02-13 06:15:17,826 p=11820 u=student n=ansible | 1 plays in samba.yml
+2023-02-13 06:15:17,828 p=11820 u=student n=ansible | PLAY [Install a samba server] **************************************************************************
+2023-02-13 06:15:17,836 p=11820 u=student n=ansible | TASK [Gathering Facts] *********************************************************************************
+2023-02-13 06:15:37,885 p=11820 u=student n=ansible | fatal: [servera.lab.exammple.com]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: ssh: connect to host servera.lab.exammple.com port 22: Connection timed out", "unreachable": true}
+2023-02-13 06:15:37,886 p=11820 u=student n=ansible | PLAY RECAP *********************************************************************************************
+2023-02-13 06:15:37,887 p=11820 u=student n=ansible | servera.lab.exammple.com   : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+2023-02-13 06:16:03,845 p=11843 u=student n=ansible | ansible-playbook 2.9.15
+  config file = /home/student/troubleshoot-playbook/ansible.cfg
+  configured module search path = ['/home/student/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3.6/site-packages/ansible
+  executable location = /usr/bin/ansible-playbook
+  python version = 3.6.8 (default, Mar 18 2021, 08:58:41) [GCC 8.4.1 20200928 (Red Hat 8.4.1-1)]
+2023-02-13 06:16:03,845 p=11843 u=student n=ansible | Using /home/student/troubleshoot-playbook/ansible.cfg as config file
+2023-02-13 06:16:03,851 p=11843 u=student n=ansible | host_list declined parsing /home/student/troubleshoot-playbook/inventory as it did not pass its verify_file() method
+2023-02-13 06:16:03,852 p=11843 u=student n=ansible | script declined parsing /home/student/troubleshoot-playbook/inventory as it did not pass its verify_file() method
+2023-02-13 06:16:03,852 p=11843 u=student n=ansible | auto declined parsing /home/student/troubleshoot-playbook/inventory as it did not pass its verify_file() method
+2023-02-13 06:16:03,854 p=11843 u=student n=ansible | Parsed /home/student/troubleshoot-playbook/inventory inventory source with ini plugin
+2023-02-13 06:16:04,069 p=11843 u=student n=ansible | PLAYBOOK: samba.yml ************************************************************************************
+2023-02-13 06:16:04,070 p=11843 u=student n=ansible | 1 plays in samba.yml
+2023-02-13 06:16:04,072 p=11843 u=student n=ansible | PLAY [Install a samba server] **************************************************************************
+2023-02-13 06:16:04,080 p=11843 u=student n=ansible | TASK [Gathering Facts] *********************************************************************************
+2023-02-13 06:16:04,091 p=11849 u=student n=ansible | <servera.lab.exammple.com> ESTABLISH SSH CONNECTION FOR USER: devops
+2023-02-13 06:16:04,092 p=11849 u=student n=ansible | <servera.lab.exammple.com> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="devops"' -o ConnectTimeout=10 -o ControlPath=/home/student/.ansible/cp/d4775f48c9 servera.lab.exammple.com '/bin/sh -c '"'"'echo ~devops && sleep 0'"'"''
+2023-02-13 06:16:24,111 p=11849 u=student n=ansible | <servera.lab.exammple.com> (255, b'', b'ssh: connect to host servera.lab.exammple.com port 22: Connection timed out\r\n')
+2023-02-13 06:16:24,115 p=11843 u=student n=ansible | fatal: [servera.lab.exammple.com]: UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: ssh: connect to host servera.lab.exammple.com port 22: Connection timed out",
+    "unreachable": true
+}
+2023-02-13 06:16:24,116 p=11843 u=student n=ansible | PLAY RECAP *********************************************************************************************
+2023-02-13 06:16:24,116 p=11843 u=student n=ansible | servera.lab.exammple.com   : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+2023-02-13 06:18:17,734 p=11870 u=student n=ansible | ansible-playbook 2.9.15
+  config file = /home/student/troubleshoot-playbook/ansible.cfg
+  configured module search path = ['/home/student/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3.6/site-packages/ansible
+  executable location = /usr/bin/ansible-playbook
+  python version = 3.6.8 (default, Mar 18 2021, 08:58:41) [GCC 8.4.1 20200928 (Red Hat 8.4.1-1)]
+2023-02-13 06:18:17,734 p=11870 u=student n=ansible | Using /home/student/troubleshoot-playbook/ansible.cfg as config file
+2023-02-13 06:18:17,734 p=11870 u=student n=ansible | setting up inventory plugins
+2023-02-13 06:18:17,740 p=11870 u=student n=ansible | host_list declined parsing /home/student/troubleshoot-playbook/inventory as it did not pass its verify_file() method
+2023-02-13 06:18:17,740 p=11870 u=student n=ansible | script declined parsing /home/student/troubleshoot-playbook/inventory as it did not pass its verify_file() method
+2023-02-13 06:18:17,740 p=11870 u=student n=ansible | auto declined parsing /home/student/troubleshoot-playbook/inventory as it did not pass its verify_file() method
+2023-02-13 06:18:17,743 p=11870 u=student n=ansible | Parsed /home/student/troubleshoot-playbook/inventory inventory source with ini plugin
+2023-02-13 06:18:17,918 p=11870 u=student n=ansible | Loading callback plugin default of type stdout, v2.0 from /usr/lib/python3.6/site-packages/ansible/plugins/callback/default.py
+2023-02-13 06:18:17,958 p=11870 u=student n=ansible | PLAYBOOK: samba.yml ************************************************************************************
+2023-02-13 06:18:17,959 p=11870 u=student n=ansible | 1 plays in samba.yml
+2023-02-13 06:18:17,961 p=11870 u=student n=ansible | PLAY [Install a samba server] **************************************************************************
+2023-02-13 06:18:17,969 p=11870 u=student n=ansible | TASK [Gathering Facts] *********************************************************************************
+2023-02-13 06:18:17,979 p=11876 u=student n=ansible | <servera.lab.exammple.com> ESTABLISH SSH CONNECTION FOR USER: devops
+2023-02-13 06:18:17,981 p=11876 u=student n=ansible | <servera.lab.exammple.com> SSH: EXEC ssh -vvv -C -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="devops"' -o ConnectTimeout=10 -o ControlPath=/home/student/.ansible/cp/d4775f48c9 servera.lab.exammple.com '/bin/sh -c '"'"'echo ~devops && sleep 0'"'"''
+2023-02-13 06:18:38,001 p=11876 u=student n=ansible | <servera.lab.exammple.com> (255, b'', b'OpenSSH_8.0p1, OpenSSL 1.1.1g FIPS  21 Apr 2020\r\ndebug1: Reading configuration data /home/student/.ssh/config\r\ndebug1: /home/student/.ssh/config line 1: Applying options for *\r\ndebug1: Reading configuration data /etc/ssh/ssh_config\r\ndebug3: /etc/ssh/ssh_config line 52: Including file /etc/ssh/ssh_config.d/01-training.conf depth 0\r\ndebug1: Reading configuration data /etc/ssh/ssh_config.d/01-training.conf\r\ndebug1: /etc/ssh/ssh_config.d/01-training.conf line 1: Applying options for *\r\ndebug3: /etc/ssh/ssh_config line 52: Including file /etc/ssh/ssh_config.d/05-redhat.conf depth 0\r\ndebug1: Reading configuration data /etc/ssh/ssh_config.d/05-redhat.conf\r\ndebug2: checking match for \'final all\' host servera.lab.exammple.com originally servera.lab.exammple.com\r\ndebug3: /etc/ssh/ssh_config.d/05-redhat.conf line 3: not matched \'final\'\r\ndebug2: match not found\r\ndebug3: /etc/ssh/ssh_config.d/05-redhat.conf line 5: Including file /etc/crypto-policies/back-ends/openssh.config depth 1 (parse only)\r\ndebug1: Reading configuration data /etc/crypto-policies/back-ends/openssh.config\r\ndebug3: gss kex names ok: [gss-curve25519-sha256-,gss-nistp256-sha256-,gss-group14-sha256-,gss-group16-sha512-,gss-gex-sha1-,gss-group14-sha1-]\r\ndebug3: kex names ok: [curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1]\r\ndebug1: configuration requests final Match pass\r\ndebug1: re-parsing configuration\r\ndebug1: Reading configuration data /home/student/.ssh/config\r\ndebug1: /home/student/.ssh/config line 1: Applying options for *\r\ndebug2: add_identity_file: ignoring duplicate key ~/.ssh/lab_rsa\r\ndebug1: Reading configuration data /etc/ssh/ssh_config\r\ndebug3: /etc/ssh/ssh_config line 52: Including file /etc/ssh/ssh_config.d/01-training.conf depth 0\r\ndebug1: Reading configuration data /etc/ssh/ssh_config.d/01-training.conf\r\ndebug1: /etc/ssh/ssh_config.d/01-training.conf line 1: Applying options for *\r\ndebug3: /etc/ssh/ssh_config line 52: Including file /etc/ssh/ssh_config.d/05-redhat.conf depth 0\r\ndebug1: Reading configuration data /etc/ssh/ssh_config.d/05-redhat.conf\r\ndebug2: checking match for \'final all\' host servera.lab.exammple.com originally servera.lab.exammple.com\r\ndebug3: /etc/ssh/ssh_config.d/05-redhat.conf line 3: matched \'final\'\r\ndebug2: match found\r\ndebug3: /etc/ssh/ssh_config.d/05-redhat.conf line 5: Including file /etc/crypto-policies/back-ends/openssh.config depth 1\r\ndebug1: Reading configuration data /etc/crypto-policies/back-ends/openssh.config\r\ndebug3: gss kex names ok: [gss-curve25519-sha256-,gss-nistp256-sha256-,gss-group14-sha256-,gss-group16-sha512-,gss-gex-sha1-,gss-group14-sha1-]\r\ndebug3: kex names ok: [curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1]\r\ndebug1: auto-mux: Trying existing master\r\ndebug1: Control socket "/home/student/.ansible/cp/d4775f48c9" does not exist\r\ndebug2: resolving "servera.lab.exammple.com" port 22\r\ndebug2: ssh_connect_direct\r\ndebug1: Connecting to servera.lab.exammple.com [3.94.41.167] port 22.\r\ndebug2: fd 4 setting O_NONBLOCK\r\ndebug1: connect to address 3.94.41.167 port 22: Connection timed out\r\ndebug1: Connecting to servera.lab.exammple.com [52.86.6.113] port 22.\r\ndebug2: fd 4 setting O_NONBLOCK\r\ndebug1: connect to address 52.86.6.113 port 22: Connection timed out\r\nssh: connect to host servera.lab.exammple.com port 22: Connection timed out\r\n')
+2023-02-13 06:18:38,004 p=11870 u=student n=ansible | fatal: [servera.lab.exammple.com]: UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: OpenSSH_8.0p1, OpenSSL 1.1.1g FIPS  21 Apr 2020\r\ndebug1: Reading configuration data /home/student/.ssh/config\r\ndebug1: /home/student/.ssh/config line 1: Applying options for *\r\ndebug1: Reading configuration data /etc/ssh/ssh_config\r\ndebug3: /etc/ssh/ssh_config line 52: Including file /etc/ssh/ssh_config.d/01-training.conf depth 0\r\ndebug1: Reading configuration data /etc/ssh/ssh_config.d/01-training.conf\r\ndebug1: /etc/ssh/ssh_config.d/01-training.conf line 1: Applying options for *\r\ndebug3: /etc/ssh/ssh_config line 52: Including file /etc/ssh/ssh_config.d/05-redhat.conf depth 0\r\ndebug1: Reading configuration data /etc/ssh/ssh_config.d/05-redhat.conf\r\ndebug2: checking match for 'final all' host servera.lab.exammple.com originally servera.lab.exammple.com\r\ndebug3: /etc/ssh/ssh_config.d/05-redhat.conf line 3: not matched 'final'\r\ndebug2: match not found\r\ndebug3: /etc/ssh/ssh_config.d/05-redhat.conf line 5: Including file /etc/crypto-policies/back-ends/openssh.config depth 1 (parse only)\r\ndebug1: Reading configuration data /etc/crypto-policies/back-ends/openssh.config\r\ndebug3: gss kex names ok: [gss-curve25519-sha256-,gss-nistp256-sha256-,gss-group14-sha256-,gss-group16-sha512-,gss-gex-sha1-,gss-group14-sha1-]\r\ndebug3: kex names ok: [curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1]\r\ndebug1: configuration requests final Match pass\r\ndebug1: re-parsing configuration\r\ndebug1: Reading configuration data /home/student/.ssh/config\r\ndebug1: /home/student/.ssh/config line 1: Applying options for *\r\ndebug2: add_identity_file: ignoring duplicate key ~/.ssh/lab_rsa\r\ndebug1: Reading configuration data /etc/ssh/ssh_config\r\ndebug3: /etc/ssh/ssh_config line 52: Including file /etc/ssh/ssh_config.d/01-training.conf depth 0\r\ndebug1: Reading configuration data /etc/ssh/ssh_config.d/01-training.conf\r\ndebug1: /etc/ssh/ssh_config.d/01-training.conf line 1: Applying options for *\r\ndebug3: /etc/ssh/ssh_config line 52: Including file /etc/ssh/ssh_config.d/05-redhat.conf depth 0\r\ndebug1: Reading configuration data /etc/ssh/ssh_config.d/05-redhat.conf\r\ndebug2: checking match for 'final all' host servera.lab.exammple.com originally servera.lab.exammple.com\r\ndebug3: /etc/ssh/ssh_config.d/05-redhat.conf line 3: matched 'final'\r\ndebug2: match found\r\ndebug3: /etc/ssh/ssh_config.d/05-redhat.conf line 5: Including file /etc/crypto-policies/back-ends/openssh.config depth 1\r\ndebug1: Reading configuration data /etc/crypto-policies/back-ends/openssh.config\r\ndebug3: gss kex names ok: [gss-curve25519-sha256-,gss-nistp256-sha256-,gss-group14-sha256-,gss-group16-sha512-,gss-gex-sha1-,gss-group14-sha1-]\r\ndebug3: kex names ok: [curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1]\r\ndebug1: auto-mux: Trying existing master\r\ndebug1: Control socket \"/home/student/.ansible/cp/d4775f48c9\" does not exist\r\ndebug2: resolving \"servera.lab.exammple.com\" port 22\r\ndebug2: ssh_connect_direct\r\ndebug1: Connecting to servera.lab.exammple.com [3.94.41.167] port 22.\r\ndebug2: fd 4 setting O_NONBLOCK\r\ndebug1: connect to address 3.94.41.167 port 22: Connection timed out\r\ndebug1: Connecting to servera.lab.exammple.com [52.86.6.113] port 22.\r\ndebug2: fd 4 setting O_NONBLOCK\r\ndebug1: connect to address 52.86.6.113 port 22: Connection timed out\r\nssh: connect to host servera.lab.exammple.com port 22: Connection timed out",
+    "unreachable": true
+}
+2023-02-13 06:18:38,005 p=11870 u=student n=ansible | PLAY RECAP *********************************************************************************************
+2023-02-13 06:18:38,006 p=11870 u=student n=ansible | servera.lab.exammple.com   : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+2023-02-13 06:19:21,213 p=11902 u=student n=ansible | PLAY [Install a samba server] **************************************************************************
+2023-02-13 06:19:21,221 p=11902 u=student n=ansible | TASK [Gathering Facts] *********************************************************************************
+2023-02-13 06:19:22,471 p=11902 u=student n=ansible | ok: [servera.lab.example.com]
+2023-02-13 06:19:22,480 p=11902 u=student n=ansible | TASK [install samba] ***********************************************************************************
+2023-02-13 06:19:25,441 p=11902 u=student n=ansible | changed: [servera.lab.example.com]
+2023-02-13 06:19:25,450 p=11902 u=student n=ansible | TASK [install firewalld] *******************************************************************************
+2023-02-13 06:19:26,919 p=11902 u=student n=ansible | ok: [servera.lab.example.com]
+2023-02-13 06:19:26,929 p=11902 u=student n=ansible | TASK [debug install_state variable] ********************************************************************
+2023-02-13 06:19:26,963 p=11902 u=student n=ansible | ok: [servera.lab.example.com] => {
+    "msg": "The state for the samba service is installed"
+}
+2023-02-13 06:19:26,974 p=11902 u=student n=ansible | TASK [start samba] *************************************************************************************
+2023-02-13 06:19:28,319 p=11902 u=student n=ansible | changed: [servera.lab.example.com]
+2023-02-13 06:19:28,328 p=11902 u=student n=ansible | TASK [start firewalld] *********************************************************************************
+2023-02-13 06:19:28,809 p=11902 u=student n=ansible | ok: [servera.lab.example.com]
+2023-02-13 06:19:28,818 p=11902 u=student n=ansible | TASK [configure firewall for samba] ********************************************************************
+2023-02-13 06:19:29,503 p=11902 u=student n=ansible | changed: [servera.lab.example.com]
+2023-02-13 06:19:29,513 p=11902 u=student n=ansible | TASK [deliver samba config] ****************************************************************************
+2023-02-13 06:19:29,605 p=11902 u=student n=ansible | fatal: [servera.lab.example.com]: FAILED! => {"changed": false, "msg": "Could not find or access 'samba.j2'\nSearched in:\n\t/home/student/troubleshoot-playbook/templates/samba.j2\n\t/home/student/troubleshoot-playbook/samba.j2\n\t/home/student/troubleshoot-playbook/templates/samba.j2\n\t/home/student/troubleshoot-playbook/samba.j2 on the Ansible Controller.\nIf you are using a module and expect the file to exist on the remote, see the remote_src option"}
+2023-02-13 06:19:29,606 p=11902 u=student n=ansible | PLAY RECAP *********************************************************************************************
+2023-02-13 06:19:29,606 p=11902 u=student n=ansible | servera.lab.example.com    : ok=7    changed=3    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2023-02-13 06:20:52,470 p=12006 u=student n=ansible | PLAY [Install a samba server] **************************************************************************
+2023-02-13 06:20:52,478 p=12006 u=student n=ansible | TASK [Gathering Facts] *********************************************************************************
+2023-02-13 06:20:53,723 p=12006 u=student n=ansible | ok: [servera.lab.example.com]
+2023-02-13 06:20:53,732 p=12006 u=student n=ansible | TASK [install samba] ***********************************************************************************
+2023-02-13 06:20:55,284 p=12006 u=student n=ansible | ok: [servera.lab.example.com]
+2023-02-13 06:20:55,293 p=12006 u=student n=ansible | TASK [install firewalld] *******************************************************************************
+2023-02-13 06:20:56,691 p=12006 u=student n=ansible | ok: [servera.lab.example.com]
+2023-02-13 06:20:56,701 p=12006 u=student n=ansible | TASK [debug install_state variable] ********************************************************************
+2023-02-13 06:20:56,733 p=12006 u=student n=ansible | ok: [servera.lab.example.com] => {
+    "msg": "The state for the samba service is installed"
+}
+2023-02-13 06:20:56,743 p=12006 u=student n=ansible | TASK [start samba] *************************************************************************************
+2023-02-13 06:20:57,458 p=12006 u=student n=ansible | ok: [servera.lab.example.com]
+2023-02-13 06:20:57,467 p=12006 u=student n=ansible | TASK [start firewalld] *********************************************************************************
+2023-02-13 06:20:57,943 p=12006 u=student n=ansible | ok: [servera.lab.example.com]
+2023-02-13 06:20:57,952 p=12006 u=student n=ansible | TASK [configure firewall for samba] ********************************************************************
+2023-02-13 06:20:58,597 p=12006 u=student n=ansible | ok: [servera.lab.example.com]
+2023-02-13 06:20:58,606 p=12006 u=student n=ansible | TASK [deliver samba config] ****************************************************************************
+2023-02-13 06:20:59,502 p=12006 u=student n=ansible | changed: [servera.lab.example.com]
+2023-02-13 06:20:59,504 p=12006 u=student n=ansible | PLAY RECAP *********************************************************************************************
+2023-02-13 06:20:59,504 p=12006 u=student n=ansible | servera.lab.example.com    : ok=8    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2023-02-13 06:21:21,899 p=12099 u=student n=ansible | PLAY [Install a samba server] **************************************************************************
+2023-02-13 06:21:31,900 p=12099 u=student n=ansible | Perform task: TASK: Gathering Facts (N)o/(y)es/(c)ontinue: *********************************************
+2023-02-13 06:21:31,905 p=12099 u=student n=ansible | TASK [Gathering Facts] *********************************************************************************
+2023-02-13 06:21:32,918 p=12099 u=student n=ansible | ok: [servera.lab.example.com]
+2023-02-13 06:21:35,149 p=12099 u=student n=ansible | Perform task: TASK: install samba (N)o/(y)es/(c)ontinue: ***********************************************
+2023-02-13 06:21:35,158 p=12099 u=student n=ansible | TASK [install samba] ***********************************************************************************
+2023-02-13 06:21:36,682 p=12099 u=student n=ansible | ok: [servera.lab.example.com]
+2023-02-13 06:21:37,661 p=12099 u=student n=ansible | Perform task: TASK: install firewalld (N)o/(y)es/(c)ontinue: *******************************************
+2023-02-13 06:21:37,669 p=12099 u=student n=ansible | TASK [install firewalld] *******************************************************************************
+2023-02-13 06:21:39,057 p=12099 u=student n=ansible | ok: [servera.lab.example.com]
+2023-02-13 06:21:39,997 p=12099 u=student n=ansible | Perform task: TASK: debug install_state variable (N)o/(y)es/(c)ontinue: ********************************
+2023-02-13 06:21:40,005 p=12099 u=student n=ansible | TASK [debug install_state variable] ********************************************************************
+2023-02-13 06:21:40,039 p=12099 u=student n=ansible | ok: [servera.lab.example.com] => {
+    "msg": "The state for the samba service is installed"
+}
+2023-02-13 06:21:41,501 p=12099 u=student n=ansible | Perform task: TASK: start samba (N)o/(y)es/(c)ontinue: *************************************************
+2023-02-13 06:21:41,509 p=12099 u=student n=ansible | TASK [start samba] *************************************************************************************
+2023-02-13 06:21:42,224 p=12099 u=student n=ansible | ok: [servera.lab.example.com]
+2023-02-13 06:21:43,421 p=12099 u=student n=ansible | Perform task: TASK: start firewalld (N)o/(y)es/(c)ontinue: *********************************************
+2023-02-13 06:21:43,429 p=12099 u=student n=ansible | TASK [start firewalld] *********************************************************************************
+2023-02-13 06:21:43,909 p=12099 u=student n=ansible | ok: [servera.lab.example.com]
+2023-02-13 06:21:46,525 p=12099 u=student n=ansible | Perform task: TASK: configure firewall for samba (N)o/(y)es/(c)ontinue: ********************************
+2023-02-13 06:21:46,533 p=12099 u=student n=ansible | TASK [configure firewall for samba] ********************************************************************
+2023-02-13 06:21:47,166 p=12099 u=student n=ansible | ok: [servera.lab.example.com]
+2023-02-13 06:21:48,109 p=12099 u=student n=ansible | Perform task: TASK: deliver samba config (N)o/(y)es/(c)ontinue: ****************************************
+2023-02-13 06:21:48,117 p=12099 u=student n=ansible | TASK [deliver samba config] ****************************************************************************
+2023-02-13 06:21:48,960 p=12099 u=student n=ansible | ok: [servera.lab.example.com]
+2023-02-13 06:21:48,962 p=12099 u=student n=ansible | PLAY RECAP *********************************************************************************************
+2023-02-13 06:21:48,962 p=12099 u=student n=ansible | servera.lab.example.com    : ok=8    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
