@@ -1,0 +1,4 @@
+- name: servidores
+  import_playbook: ansible-vsftpd.yml
+- name: clientes
+  import_playbook: ftpclients.yml
