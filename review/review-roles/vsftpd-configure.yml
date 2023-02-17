@@ -1,5 +1,7 @@
 - name: Install and configure vsftpd
   hosts: ftpservers
+#  vars_files:
+#    - vars/defaults-template.yml
   vars:
     vsftpd_anon_root: /mnt/share/
     vsftpd_local_root: /mnt/share/
